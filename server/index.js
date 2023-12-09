@@ -7,13 +7,19 @@ dotenv.config()
 const app = express()
 app.use(bodyParser.urlencoded({extended:false}))
 
-app.get('/',(req,res)=>{
+app.get('/health',(req,res)=>{
     res.json({
-        status:"SUCCESS",
+        status:"Server is UP and Running",
         message:"All Good"
     })
 })
 
 app.listen(process.env.PORT,()=>{
-    console.log(`server running on localhost:${process.env.PORT}`)
+    mongoose.connect(process.env.MONGODB_URL)
+    .then(()=>{
+        console.log(`server running on localhost:${process.env.PORT}`)
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
 })
